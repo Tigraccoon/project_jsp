@@ -6,7 +6,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="user">
 	<select id="login" resultType="user.dto.UserDTO">
 		SELECT * FROM project_jsp_user 
-		WHERE userid=#{userid} AND pwd=#{pwd}
+			WHERE userid=#{userid} AND pwd=PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd})
+	</select>
+	<select id="idCheck" resultType="String">
+		SELECT userid FROM project_jsp_user
+			WHERE userid=#{userid}
 	</select>
 </mapper>
 

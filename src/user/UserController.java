@@ -28,19 +28,51 @@ public class UserController extends HttpServlet {
 			String userid = request.getParameter("userid");
 			String pwd = request.getParameter("pwd");
 			
-			UserDTO user = dao.login(userid, pwd);
+			String tempid = dao.idCheck(userid);
 			
-			session.setAttribute("user", user);
+			if(tempid.equals("아이디가 없어요...")) {	//아이디 없음
+				request.setAttribute("message", "아이디가 없습니다.");
+				
+				page = "/user/login.jsp";
+				RequestDispatcher rd = request.getRequestDispatcher(page);
+				rd.forward(request, response);
+				
+			} else {	//아이디 있음
+				
+				UserDTO user = dao.login(userid, pwd);
+				
+				if(user.getUserid().equals("비밀번호가 올바르지 않습니다...")) {	//비밀번호 틀림
+					request.setAttribute("message", "비밀번호가 올바르지 않습니다.");
+					
+					page = "/user/login.jsp";
+					RequestDispatcher rd = request.getRequestDispatcher(page);
+					rd.forward(request, response);
+					
+				} else { //로그인 성공
+					session.setAttribute("user", user);
+					
+					page = "/main/index.jsp";
+					RequestDispatcher rd = request.getRequestDispatcher(page);
+					rd.forward(request, response);
+				}
+				
+				
+			}
+			
+		}	//로그인
+		
+		else if(uri.indexOf("logout.do") != -1) {
+			session.invalidate();
+			session = request.getSession();
 			
 			page = "/main/index.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
-			
-		}	//로그인
+		}	//로그아웃
 		
 		
 	
-	}
+	}//doget
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

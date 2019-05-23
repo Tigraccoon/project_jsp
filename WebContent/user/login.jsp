@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>login</title>
+<title>로그인</title>
 <%@include file="../include/header.jsp" %>
 <style type="text/css">
 
@@ -29,38 +29,55 @@
       <c:if test="${user.name == null }">	<!-- 로그인 전 -->
       <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="login()">
-          	<span class="glyphicon glyphicon-log-in"></span>로그인
+          	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">아이디/비밀번호 찾기</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">회원가입</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>
       </li>
       </c:if>
       <c:if test="${user.name != null }">	<!-- 로그인 이후 -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          	<label class="text text-primary">${sessionScope.user.name }</label> 님
+          	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${sessionScope.user.name }</label> 님
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">내가 쓴 글</a>
-          <a class="dropdown-item" href="#">회원정보</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">로그아웃</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
         </div>
       </li>
       </c:if>
     </ul>
     <form class="form-inline my-2 my-sm-0">
       <input class="form-control mr-sm-2" type="search" placeholder="게시물 검색" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i>&nbsp;Search</button>
     </form>
   </div>
 </nav>
 </div>
 	<hr><br><br><br>
 	
+	
+	<!-- 내부 컨텐츠 -->
+
+<c:if test="${message != null }">
+  <div class="form-group row justify-content-center">
+    <div class="col col-auto">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+ 			<strong>${message }</strong>&nbsp;&nbsp;확인하고 다시 로그인해주세요.
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+    </div>
+  </div>
+</c:if>
+
+
 <div class="container-fluid">
 	<div class="row justify-content-center">
 		<div class="col col-auto">
@@ -78,9 +95,10 @@
       <input type="password" class="form-control" name="pwd" placeholder="Password">
     </div>
   </div>
+
    <div class="form-group row justify-content-center">
     <div class="col col-auto">
-    	<input type="submit" class="btn btn-primary" value="로그인">
+    	<button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;로그인</button>
     </div>
    </div>
 </form>
@@ -88,5 +106,13 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+
+
+</script>
+
+
 </body>
 </html>
