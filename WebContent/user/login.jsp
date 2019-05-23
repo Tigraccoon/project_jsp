@@ -26,7 +26,7 @@
       <li class="nav-item">
         <a class="nav-link" href="#">글쓰기</a>
       </li>
-      <c:if test="${user.name == null }">	<!-- 로그인 전 -->
+      <c:if test="${user.userid == null }">	<!-- 로그인 전 -->
       <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="login()">
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
@@ -34,18 +34,18 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
+          <a class="dropdown-item" href="signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>
       </li>
       </c:if>
-      <c:if test="${user.name != null }">	<!-- 로그인 이후 -->
+      <c:if test="${user.userid != null }">	<!-- 로그인 이후 -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${sessionScope.user.name }</label> 님
+          	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${user.userid }</label> 님
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
-          <a class="dropdown-item" href="#"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
+          <a class="dropdown-item" href="../user/pwd_Check.jsp"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
         </div>
@@ -86,13 +86,13 @@
    <div class="form-group row">
     <label for="userid" class="col-sm-4 col-form-label">아이디</label>
     <div class="col-md">
-      <input class="form-control" name="userid" placeholder="ID">
+      <input class="form-control" name="userid" id="userid" placeholder="ID">
     </div>
   </div>
   <div class="form-group row">
     <label for="pwd" class="col-sm-4 col-form-label">비밀번호</label>
     <div class="col-md-8">
-      <input type="password" class="form-control" name="pwd" placeholder="Password">
+      <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Password">
     </div>
   </div>
 
@@ -108,6 +108,16 @@
 </div>
 
 <script type="text/javascript">
+$(function(){
+	$("#login").click(function(){
+		location.href="../user/login.jsp";
+	});
+	
+	$("#logout").click(function(){
+		location.href="${path}/user_servlet/logout.do";
+	});
+});
+
 
 
 

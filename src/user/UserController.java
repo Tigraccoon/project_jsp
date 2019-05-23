@@ -70,7 +70,123 @@ public class UserController extends HttpServlet {
 			rd.forward(request, response);
 		}	//로그아웃
 		
+		else if(uri.indexOf("signup1.do") != -1) {
+			String userid = request.getParameter("userid");
+			String email = request.getParameter("email");
+			
+			String checkid = dao.idCheck(userid);
+			String checkemail = dao.emailCheck(email);
+			if (checkid.equals("아이디가 없어요...")) {	//아이디 중복검사
+				request.setAttribute("userid", userid);
+				
+				if(checkemail.equals("이메일이 없어요...")) {	//이메일 중복검사
+					page = "/user/signup_2.jsp";
+					
+				} else {
+					request.setAttribute("hasEmail", "이미 가입된 이메일입니다.");
+					page = "/user/signup.jsp";
+				}
+				
+			} else {
+				request.setAttribute("hasUserId", "이미 가입된 아이디입니다.");
+				page = "/user/signup.jsp";
+				
+			}
+			
+			request.setAttribute("userid", userid);
+			request.setAttribute("email", email);
+			
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+		}
 		
+		else if(uri.indexOf("signup.do") != -1) {
+			UserDTO dto = new UserDTO();
+			
+			String userid = request.getParameter("userid");
+			String pwd = request.getParameter("pwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String hp = request.getParameter("hp");
+			String zipcode = request.getParameter("zipcode");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			
+			dto.setUserid(userid);
+			dto.setPwd(pwd);
+			dto.setName(name);
+			dto.setEmail(email);
+			dto.setHp(hp);
+			dto.setZipcode(zipcode);
+			dto.setAddress1(address1);
+			dto.setAddress2(address2);
+			
+			dao.insertUser(dto);
+			
+			request.setAttribute("userid", userid);
+			
+			page = "/user/signupCompleted.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+		}
+		
+		else if(uri.indexOf("set_user.do") != -1) {
+			String userid = request.getParameter("userid");
+			String pwd = request.getParameter("pwd");
+			
+			String message = dao.pwdCheck(userid,pwd);
+			
+			if (message.equals("비밀번호가 올바르지 않습니다.")) {
+				page ="/user/pwd_Check.jsp";
+			} else {
+				page = "/user/set_User.jsp";
+			}
+			
+			request.setAttribute("message", message);
+			
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		} else if(uri.indexOf("update") != -1) {
+			UserDTO dto = new UserDTO();
+			
+			String userid = request.getParameter("userid");
+			String pwd = request.getParameter("pwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String hp = request.getParameter("hp");
+			String zipcode = request.getParameter("zipcode");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			
+			dto.setUserid(userid);
+			dto.setPwd(pwd);
+			dto.setName(name);
+			dto.setEmail(email);
+			dto.setHp(hp);
+			dto.setZipcode(zipcode);
+			dto.setAddress1(address1);
+			dto.setAddress2(address2);
+			
+			dao.updateUser(dto);
+			
+			
+			page = "/user_servlet/logout.do";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		} 
+		
+		else if(uri.indexOf("delete.do") != -1) {
+			String userid = request.getParameter("userid");
+			
+			dao.deleteUser(userid);
+			
+			page = "/user_servlet/logout.do";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		}
 	
 	}//doget
 

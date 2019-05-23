@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>회원 정보</title>
 <%@include file="../include/header.jsp" %>
-<%@include file="../include/signup_check.jsp" %>
+<%@include file="../include/login_check.jsp" %>
 
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script type="text/javascript"> 
@@ -14,7 +14,7 @@
 		$("#postcodify_search_button").postcodifyPopUp();
 	}); 
 	
-	function doSubmit(){
+	function doUpdate(){
 		var userid = $("#userid");
 		var pwd = $("#pwd");
 		var name = $("#name");
@@ -50,8 +50,20 @@
 			return;
 		}
 		
-		document.form1.action="${path}/user_servlet/signup.do";
+		alert("회원정보가 수정됩니다. 다시 로그인해주세요.");
+		document.form1.action="${path}/user_servlet/update.do";
 		document.form1.submit();
+	}
+	
+	function doDelete(){
+		if(confirm("정말 회원 탈퇴하시겠습니까?")==true){
+			
+			document.form1.action="${path}/user_servlet/delete.do";
+			document.form1.submit();
+		} else{
+			return;
+		}
+		
 	}
 </script>
 </head>
@@ -72,7 +84,7 @@
         <a class="nav-link" href="#">글쓰기</a>
       </li>
       <c:if test="${user.userid == null }">	<!-- 로그인 전 -->
-      <li class="nav-item dropdown active">
+      <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" id="login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
@@ -84,13 +96,13 @@
       </li>
       </c:if>
       <c:if test="${user.userid != null }">	<!-- 로그인 이후 -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${user.userid }</label> 님
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
-          <a class="dropdown-item" href="#"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
+          <a class="dropdown-item active" href="../user/pwd_Check.jsp"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
         </div>
@@ -104,17 +116,7 @@
   </div>
 </nav>
 </div>
-	<div class="progress" style="height: 50px;">
-  		<div class="progress-bar bg-primary" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-  			<a href="../user/signup.jsp" class="btn btn-block text-dark"><i class="fa fa-check"></i>&nbsp;아이디/이메일 중복확인</a>
-  		</div>
-		<div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-			<a href="#" class="btn btn-block text-light"><i class="fa fa-map-marker"></i>&nbsp;상세 정보 입력</a>
-		</div>
-  		<div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-  			<a href="#" class="btn btn-block text-dark"><i class="fa fa-spinner"></i>&nbsp;회원가입 완료</a>
-  		</div>
-  	</div>
+	
   	<br><hr><br><br>
 	
 	
@@ -123,12 +125,14 @@
 <div class="container-fluid">
  <div class="row justify-content-center">
   <div class="col col-md-8">
+  	<h2>회원 정보</h2>
+  <br><br>
 	<form action="" method="post" name="form1" id="form1">
 	
   		<div class="form-group row">
     		<label for="userid" class="col-md-4 col-form-label">ID</label>
     		<div class="col-md-8">
-      			<input class="form-control" id="userid" name="userid" readonly="readonly" value="${userid }">
+      			<input class="form-control" id="userid" name="userid" readonly="readonly" value="${user.userid }">
     		</div>
   		</div>
   		
@@ -142,28 +146,28 @@
   		<div class="form-group row">
     		<label for="name" class="col-md-4 col-form-label">이름</label>
     		<div class="col-md-8">
-      			<input class="form-control" id="name" name="name" placeholder="이름" autocomplete="off">
+      			<input class="form-control" id="name" name="name" placeholder="이름" autocomplete="off" value="${user.name }">
     		</div>
   		</div>
   		
   		<div class="form-group row">
     		<label for="email" class="col-md-4 col-form-label">Email</label>
     		<div class="col-md-8">
-      			<input type="email" class="form-control" id="email" name="email" readonly="readonly" value="${email }">
+      			<input type="email" class="form-control" id="email" name="email" readonly="readonly"  value="${user.email }">
     		</div>
   		</div>
   		
   		<div class="form-group row">
     		<label for="hp" class="col-md-4 col-form-label">전화번호</label>
     		<div class="col-md-8">
-      			<input type="tel" class="form-control" id="hp" name="hp" placeholder="010-1234-5678" autocomplete="off">
+      			<input type="tel" class="form-control" id="hp" name="hp" placeholder="010-1234-5678" autocomplete="off"  value="${user.hp }">
     		</div>
   		</div>
   		
   		<div class="form-group row">
 			<label for="postcodify_search_button" class="col-md-4 col-form-label">우편번호</label>
 			 	<div class="col-md-4">
-  					<input name="zipcode" id="zipcode" class="postcodify_postcode5 form-control" autocomplete="off" readonly="readonly" placeholder="우편번호를 검색하세요.">
+  					<input name="zipcode" id="zipcode" class="postcodify_postcode5 form-control" autocomplete="off" readonly="readonly" placeholder="우편번호를 검색하세요."  value="${user.zipcode }">
 				</div>
 				<div class="col-md-4">
 					<input type="button" id="postcodify_search_button" class="btn btn-info btn-block" value="검색">
@@ -172,20 +176,26 @@
 		<div class="form-group row">
 			<label for="postcodify_search_button" class="col-md-4 col-form-label">주소</label>
     		<div class="col-md-8">
-  				<input name="address1" id="address1" class="postcodify_address form-control" readonly="readonly" placeholder="주소를 검색하세요.">
+  				<input name="address1" id="address1" class="postcodify_address form-control" readonly="readonly" placeholder="주소를 검색하세요."  value="${user.address1 }">
   			</div>
 		</div>
 		<div class="form-group row">
 			<label for="address2" class="col-md-4 col-form-label">상세주소</label>
     		<div class="col-md-8">
-				<input name="address2" id="address2" class="postcodify_details form-control" autocomplete="off" placeholder="상세 주소를 입력하세요.">
+				<input name="address2" id="address2" class="postcodify_details form-control" autocomplete="off" placeholder="상세 주소를 입력하세요."  value="${user.address2 }">
+  			</div>
+		</div>
+		<div class="form-group row">
+			<label for="address2" class="col-md-4 col-form-label">가입일</label>
+    		<div class="col-md-8">
+				<input class="postcodify_details form-control"   value="${user.join_date }" readonly="readonly">
   			</div>
 		</div>
 		<br>
 		<div class="form-group row justify-content-center">
 			<div class="col col-auto">
-				<input type="button" value="회원가입" id="btnSubmit" class="btn btn-primary btn-lg" onclick="doSubmit()">
-				<input type="reset" value="입력 초기화" class="btn btn-danger btn-lg">
+				<input type="button" value="회원 정보 수정" id="btnUpdate" class="btn btn-primary btn-lg" onclick="doUpdate()">
+				<input type="button" value="회원 탈퇴" id="btnDelete" class="btn btn-danger btn-lg" onclick="doDelete()">
 			</div>
 		</div>
 	

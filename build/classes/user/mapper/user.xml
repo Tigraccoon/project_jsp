@@ -5,12 +5,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="user">
 	<select id="login" resultType="user.dto.UserDTO">
-		SELECT * FROM project_jsp_user 
+		SELECT * FROM project_jsp_user  
 			WHERE userid=#{userid} AND pwd=PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd})
 	</select>
 	<select id="idCheck" resultType="String">
-		SELECT userid FROM project_jsp_user
+		SELECT name FROM project_jsp_user 
 			WHERE userid=#{userid}
 	</select>
+	<select id="emailCheck" resultType="String">
+		SELECT name FROM project_jsp_user 
+			WHERE email=#{email}
+	</select>
+	<select id="pwdCheck" resultType="String">
+		SELECT name FROM project_jsp_user  
+			WHERE userid=#{userid} AND pwd=PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd}) 
+	</select>
+	
+	<insert id="insertUser">
+		INSERT INTO project_jsp_user (userid,pwd,name,email,hp,zipcode,address1,address2) values
+			(#{userid},PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd}),#{name},#{email},#{hp},#{zipcode},#{address1},#{address2})
+	</insert>
+	
+	<update id="updateUser">
+		UPDATE project_jsp_user 
+			SET pwd=PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd}),name=#{name},hp=#{hp},zipcode=#{zipcode},address1=#{address1},address2=#{address2} 
+			WHERE userid=#{userid}
+	</update>
+	<delete id="deleteUser">
+		DELETE FROM project_jsp_user 
+			WHERE userid=#{userid}
+	</delete>
 </mapper>
 

@@ -4,9 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>index</title>
+<title>회원정보</title>
 <%@include file="../include/header.jsp" %>
+<%@include file="../include/login_check.jsp" %>
 
+<style type="text/css">
+
+</style>
 </head>
 <body>
 <div class="container-fluid">
@@ -18,7 +22,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="#">리스트<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
@@ -26,26 +30,26 @@
       </li>
       <c:if test="${user.userid == null }">	<!-- 로그인 전 -->
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" id="login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="login()">
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="../user/signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
+          <a class="dropdown-item" href="signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>
       </li>
       </c:if>
       <c:if test="${user.userid != null }">	<!-- 로그인 이후 -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${user.userid }</label> 님
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
-          <a class="dropdown-item" href="../user/pwd_Check.jsp"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
+          <a class="dropdown-item active" href="../user/pwd_Check.jsp"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" id="logout"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
         </div>
       </li>
       </c:if>
@@ -61,12 +65,47 @@
 	
 	
 	<!-- 내부 컨텐츠 -->
-	
+
+<c:if test="${message != null }">
+  <div class="form-group row justify-content-center">
+    <div class="col col-auto">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+ 			<strong>${message }</strong>&nbsp;&nbsp;
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+    </div>
+  </div>
+</c:if>
+
+
 <div class="container-fluid">
 	<div class="row justify-content-center">
 		<div class="col col-auto">
-			<div id="result"></div>
-			${user.userid }
+	<h2>회원정보 확인을 위한 비밀번호 입력</h2>
+	<br><br>
+<form method="post" action="${path }/user_servlet/set_user.do">
+   <div class="form-group row">
+    <label for="userid" class="col-sm-4 col-form-label">아이디</label>
+    <div class="col-md">
+      <input class="form-control" id="userid" name="userid" value="${user.userid }" readonly="readonly">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="pwd" class="col-sm-4 col-form-label">비밀번호</label>
+    <div class="col-md-8">
+      <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
+    </div>
+  </div>
+
+   <div class="form-group row justify-content-center">
+    <div class="col col-auto">
+    	<button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;확인</button>
+    </div>
+   </div>
+</form>
+
 		</div>
 	</div>
 </div>
@@ -86,6 +125,7 @@ $(function(){
 
 
 </script>
+
 
 </body>
 </html>
