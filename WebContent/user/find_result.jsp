@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>아이디/비밀번호 찾기 성공</title>
 <%@include file="../include/header.jsp" %>
-<style type="text/css">
+<%@include file="../include/signup_check.jsp" %>
 
-</style>
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -28,13 +28,13 @@
       </li>
       <c:if test="${user.userid == null }">	<!-- 로그인 전 -->
       <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="login()">
+        <a class="nav-link dropdown-toggle" href="#" role="button" id="login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="../user/finduser.jsp"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
+          <a class="dropdown-item active" href="../user/finduser.jsp"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
+          <a class="dropdown-item" href="../user/signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>
       </li>
       </c:if>
@@ -45,9 +45,9 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
-          <a class="dropdown-item" href="../user/pwd_Check.jsp"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
+          <a class="dropdown-item" href="#" id="logout"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
         </div>
       </li>
       </c:if>
@@ -63,65 +63,26 @@
 	
 	
 	<!-- 내부 컨텐츠 -->
-
-<c:if test="${message != null }">
-  <div class="form-group row justify-content-center">
-    <div class="col col-auto">
-		<div class="alert alert-danger alert-dismissible fade show" role="alert">
- 			<strong>${message }</strong>&nbsp;&nbsp;확인하고 다시 로그인해주세요.
-  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    			<span aria-hidden="true">&times;</span>
-  			</button>
-		</div>
-    </div>
-  </div>
-</c:if>
-
-
+  	<br><hr><br><br>
 <div class="container-fluid">
-	<div class="row justify-content-center">
-		<div class="col col-auto">
-
-<form method="post" action="${path }/user_servlet/login.do">
-   <div class="form-group row">
-    <label for="userid" class="col-sm-4 col-form-label">아이디</label>
-    <div class="col-md">
-      <input class="form-control" name="userid" id="userid" placeholder="ID">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="pwd" class="col-sm-4 col-form-label">비밀번호</label>
-    <div class="col-md-8">
-      <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Password">
-    </div>
-  </div>
-
-   <div class="form-group row justify-content-center">
-    <div class="col col-auto">
-    	<button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;로그인</button>
-    </div>
-   </div>
-</form>
-
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript">
-$(function(){
-	$("#login").click(function(){
-		location.href="../user/login.jsp";
-	});
+ <div class="row justify-content-center">
+  <div class="col col-auto">
+  	
+  	<h2><strong>아이디/비밀번호</strong>찾기에 성공하였습니다!</h2>
+  	<br>
+  	<h3>보안을 위해 비밀번호를 아래와 같이 임시 비밀번호로 변경하였습니다.</h3>
+  	<h3>개인정보 수정에서 비밀번호를 변경해주세요.</h3>
+  	<br>
+  	<b>아이디 : <strong>${userid }</strong></b><br>
+  	<b>비밀번호 : <strong>${pwd }</strong></b><br>
+  	<br>
+  	<a href="../user/login.jsp" class="btn btn-primary btn-block">로그인</a>
 	
-	$("#logout").click(function(){
-		location.href="${path}/user_servlet/logout.do";
-	});
-});
-
-
-
-
-</script>
+	
+	
+  </div>
+ </div>
+</div>
 
 
 </body>

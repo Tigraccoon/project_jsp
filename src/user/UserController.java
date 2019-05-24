@@ -187,6 +187,35 @@ public class UserController extends HttpServlet {
 			rd.forward(request, response);
 			
 		}
+		
+		else if(uri.indexOf("finduserinfo.do") != -1) {
+			
+			String email = request.getParameter("email");
+			String name = request.getParameter("name");
+			
+			UserDTO dto = new UserDTO();
+			
+			dto.setEmail(email);
+			dto.setName(name);
+			
+			dto = dao.findUser(dto);
+			
+			if(dto.getUserid().equals("아이디, 비밀번호 찾기에 실패하였습니다. 이메일, 이름을 확인하세요!")) {
+				request.setAttribute("cantfind", dto.getUserid());
+				request.setAttribute("email", email);
+				request.setAttribute("name", name);
+				page = "/user/finduser.jsp";
+			} else {
+				request.setAttribute("userid", dto.getUserid());
+				request.setAttribute("pwd", dto.getPwd());
+				page = "/user/find_result.jsp";
+				
+			}
+			
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		}
 	
 	}//doget
 

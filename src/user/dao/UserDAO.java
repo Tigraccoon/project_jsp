@@ -2,6 +2,7 @@ package user.dao;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -166,6 +167,39 @@ public class UserDAO {
 			if(session!=null)session.close();
 		}
 		
+	}
+
+	public UserDTO findUser(UserDTO dto) {
+		SqlSession session = null; 
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			dto = session.selectOne("user.findUser", dto);
+			
+			if(dto == null) {
+				dto = new UserDTO();
+				dto.setUserid("아이디, 비밀번호 찾기에 실패하였습니다. 이메일, 이름을 확인하세요!");
+			} else {	//임시 비밀번호로 변경
+				Random r = new Random();
+				
+				int tempPwd = r.nextInt(9999);
+				dto.setPwd(String.valueOf(tempPwd));
+				
+				session.update("user.updateUser", dto);
+				
+				session.commit();
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("findUser Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+		
+		return dto;
 	}
 
 }

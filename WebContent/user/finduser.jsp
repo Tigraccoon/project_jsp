@@ -4,22 +4,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>아이디/비밀번호 찾기</title>
 <%@include file="../include/header.jsp" %>
-<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script type="text/javascript">
 function doSubmit(){
-	var userid = $("#userid");
 	var email = $("#email");
+	var name = $("#name");
 
-	if(userid.val() == ""){	
-		alert("아이디를 입력해주세요!");
-		userid.focus();	
-		return;
-	}
 	if(email.val() == ""){	
 		alert("이메일을 입력해주세요!");
 		email.focus();	
+		return;
+	}
+	if(name.val() == ""){	
+		alert("이름을 입력해주세요!");
+		name.focus();	
 		return;
 	}
 	
@@ -49,9 +48,9 @@ function doSubmit(){
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="../user/finduser.jsp"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
+          <a class="dropdown-item" href="../user/signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>
       </li>
       </c:if>
@@ -80,30 +79,19 @@ function doSubmit(){
 	
 	
 	<!-- 내부 컨텐츠 -->
-	<div class="progress" style="height: 50px;">
-  		<div class="progress-bar bg-primary" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-  			<a href="#" class="btn btn-block text-light"><i class="fa fa-map-marker"></i>&nbsp;아이디/이메일 중복확인</a>
-  		</div>
-		<div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-			<a href="#" class="btn btn-block text-dark"><i class="fa fa-spinner"></i>&nbsp;상세 정보 입력</a>
-		</div>
-  		<div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-  			<a href="#" class="btn btn-block text-dark"><i class="fa fa-spinner"></i>&nbsp;회원가입 완료</a>
-  		</div>
-  	</div>
   	<br><hr><br><br>
 <div class="container-fluid">
  <div class="row justify-content-center">
   <div class="col col-md-8">
   	
   
-	<form action="${path }/user_servlet/signup1.do" method="post" id="form1" name="form1">
+	<form action="${path }/user_servlet/finduserinfo.do" method="post" id="form1" name="form1">
 	
-  		<c:if test="${hasUserId != null }">
+  		<c:if test="${cantfind != null }">
   			<div class="form-group row justify-content-center">
     			<div class="col col-auto">
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
- 						<strong>${hasUserId }</strong> 다른 아이디를 입력해주세요.
+ 						<strong>${cantfind }</strong>
   						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
     						<span aria-hidden="true">&times;</span>
   						</button>
@@ -112,27 +100,15 @@ function doSubmit(){
   			</div>
   		</c:if>
   		<div class="form-group row">
-    		<label for="userid" class="col-md-4 col-form-label">ID</label>
+    		<label for="userid" class="col-md-4 col-form-label">Email</label>
     		<div class="col-md-8">
-      			<input class="form-control" id="userid" name="userid" placeholder="ID" autocomplete="off" value="${userid }">
+      			<input type="email" class="form-control" id="email" name="email" placeholder="회원가입시 사용한 이메일을 입력해주세요." autocomplete="off">
     		</div>
   		</div>
-  		<c:if test="${hasEmail != null }">
-  			<div class="form-group row justify-content-center">
-    			<div class="col col-auto">
-					<div class="alert alert-danger alert-dismissible fade show" role="alert">
- 						<strong>${hasEmail }</strong> 다른 이메일 주소를 입력해주세요.
-  						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    						<span aria-hidden="true">&times;</span>
-  						</button>
-					</div>
-    			</div>
-  			</div>
-  		</c:if>
   		<div class="form-group row">
-    		<label for="email" class="col-md-4 col-form-label">Email</label>
+    		<label for="email" class="col-md-4 col-form-label">이름</label>
     		<div class="col-md-8">
-      			<input type="email" class="form-control" name="email" id="email" placeholder="email@example.com" autocomplete="off" value="${email }">
+      			<input class="form-control" name="name" id="name" placeholder="회원가입시 사용한 이름을 입력해주세요." autocomplete="off">
     		</div>
   		</div>
   		
@@ -140,7 +116,7 @@ function doSubmit(){
 		<br>
 		<div class="form-group row justify-content-center">
 			<div class="col col-auto">
-				<input type="button" value="다음" id="btnSubmit" class="btn btn-primary btn-lg" onclick="doSubmit()">
+				<input type="button" value="찾기" id="btnSubmit" class="btn btn-primary btn-lg" onclick="doSubmit()">
 			</div>
 		</div>
 	

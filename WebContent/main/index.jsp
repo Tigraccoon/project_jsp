@@ -30,7 +30,7 @@
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
+          <a class="dropdown-item" href="../user/finduser.jsp"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="../user/signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>

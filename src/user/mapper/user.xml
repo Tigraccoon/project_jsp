@@ -20,7 +20,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT name FROM project_jsp_user  
 			WHERE userid=#{userid} AND pwd=PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd}) 
 	</select>
-	
+	<select id="findUser" resultType="user.dto.UserDTO">
+		SELECT * FROM project_jsp_user
+			WHERE email=#{email} AND name=#{name}
+	</select>
 	<insert id="insertUser">
 		INSERT INTO project_jsp_user (userid,pwd,name,email,hp,zipcode,address1,address2) values
 			(#{userid},PACK_ENCRYPTION_DECRYPTION.FUNC_ENCRYPT(#{pwd}),#{name},#{email},#{hp},#{zipcode},#{address1},#{address2})
