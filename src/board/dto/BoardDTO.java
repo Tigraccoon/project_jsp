@@ -14,6 +14,8 @@ public class BoardDTO {
 	private int filesize;
 	private int down;
 	private String show;
+	private int comment_count;
+	private String ext;
 	public int getNum() {
 		return num;
 	}
@@ -80,12 +82,24 @@ public class BoardDTO {
 	public void setShow(String show) {
 		this.show = show;
 	}
+	public int getComment_count() {
+		return comment_count;
+	}
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
+	}
+	public String getExt() {
+		return ext;
+	}
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
 	@Override
 	public String toString() {
 		return "BoardDTO [num=" + num + ", writer=" + writer + ", subject=" + subject + ", reg_date=" + reg_date
 				+ ", readcount=" + readcount + ", content=" + content + ", ip=" + ip + ", filename=" + filename
-				+ ", filesize=" + filesize + ", down=" + down + ", show=" + show + "]";
+				+ ", filesize=" + filesize + ", down=" + down + ", show=" + show + ", comment_count=" + comment_count
+				+ ", ext=" + ext + "]";
 	}
-	
 	
 }

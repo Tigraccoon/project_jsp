@@ -7,6 +7,35 @@
 <title>아이디/비밀번호 찾기</title>
 <%@include file="../include/header.jsp" %>
 <script type="text/javascript">
+$(function(){
+	$("#logout").click(function(){
+		location.href="${path}/user_servlet/logout.do";
+	});
+	$("#login").click(function(){
+		location.href="../user/login.jsp";
+	});
+	$("#list").click(function(){
+		location.href="../main/index.jsp";
+	});
+	$("#main").click(function(){
+		location.href="../main/index.jsp";
+	});
+	$("#write").click(function(){
+		location.href="../board/write.jsp";
+	});
+	$("#finduser").click(function(){
+		location.href="../user/finduser.jsp";
+	});
+	$("#signup").click(function(){
+		location.href="../user/signup.jsp";
+	});
+	$("#mylist").click(function(){
+		location.href="../user/mylist.jsp";
+	});
+	$("#pwd_check").click(function(){
+		location.href="../user/pwd_Check.jsp";
+	});
+});
 function doSubmit(){
 	var email = $("#email");
 	var name = $("#name");
@@ -29,7 +58,7 @@ function doSubmit(){
 <body>
 <div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="../main/index.jsp">게시판</a>
+  <a class="navbar-brand" href="#" id="main">게시판</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -37,10 +66,10 @@ function doSubmit(){
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">리스트<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="#" id="write">리스트<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">글쓰기</a>
+        <a class="nav-link" href="#" id="write">글쓰기</a>
       </li>
       <c:if test="${user.userid == null }">	<!-- 로그인 전 -->
       <li class="nav-item dropdown active">
@@ -48,9 +77,9 @@ function doSubmit(){
           	<i class="fa fa-sign-in"></i>&nbsp;로그인
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
+          <a class="dropdown-item" href="#" id="finduser"><i class="fa fa-key"></i>&nbsp;아이디/비밀번호 찾기</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="../user/signup.jsp"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
+          <a class="dropdown-item" href="#" id="signup"><i class="fa fa-user-plus"></i>&nbsp;회원가입</a>
         </div>
       </li>
       </c:if>
@@ -60,8 +89,8 @@ function doSubmit(){
           	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${user.userid }</label> 님
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
-          <a class="dropdown-item" href="#"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
+          <a class="dropdown-item" href="#" id="mylist"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
+          <a class="dropdown-item" href="#" id="pwd_check"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
         </div>

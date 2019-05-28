@@ -8,14 +8,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT count(*) FROM project_jsp_board
 	</select>
 	<select id="list" resultType="board.dto.BoardDTO">
-		SELECT *
+		 SELECT *
 			FROM (
  		 	select A.*, rownum as rn 
 			from (
-      			select num,writer,subject,reg_date,readcount,filename,filesize,down,re_level
-				,(select count(*) from project_jsp_comment where board_num=num) comment_count, show
-      				FROM project_jsp_board
-      				ORDER BY num DESC
+      			select num,writer,subject,reg_date,readcount,filename,filesize,down,show
+			,(select count(*) from project_jsp_comment where board_num=c_num) comment_count
+      				from project_jsp_board
+      				order by num DESC
   				) A
 			)
 		where rn between #{start} and #{end}
