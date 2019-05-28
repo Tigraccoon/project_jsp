@@ -73,6 +73,7 @@
 
 <script type="text/javascript">
 $(function(){
+	list('1');
 	$("#login").click(function(){
 		location.href="../user/login.jsp";
 	});
@@ -82,7 +83,18 @@ $(function(){
 	});
 });
 
-
+function list(curPage){
+	var param = "curPage=" + curPage;
+	
+	$.ajax({
+		type : "post",
+		url : "${path}/board_servlet/list.do",
+		data : param,
+		success : function(result){	//콜백함수(서버의 응답처리)
+			$("#result").html(result);
+		}		
+	});
+}
 
 
 </script>

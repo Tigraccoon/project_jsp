@@ -20,5 +20,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<!-- 실제 sql query -->
 	<mappers>
 		<mapper resource="user/mapper/user.xml" />
+		<mapper resource="board/mapper/board.xml"/>
 	</mappers>
 </configuration>
