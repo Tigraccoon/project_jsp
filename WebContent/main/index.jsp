@@ -23,7 +23,7 @@ function list(curPage){
 		type : "post",
 		url : "${path}/board_servlet/list.do",
 		data : param,
-		success : function(result){	//콜백함수(서버의 응답처리)
+		success : function(result){	
 			$("#result").html(result);
 		}		
 	});

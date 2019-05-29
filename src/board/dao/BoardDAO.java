@@ -43,4 +43,22 @@ public class BoardDAO {
 		
 		return list;
 	}
+
+	public void write(BoardDTO dto) {
+SqlSession session = null;
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			session.insert("board.write", dto);
+			
+			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("write Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+	}
 }

@@ -20,5 +20,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		where rn between #{start} and #{end}
 	</select>
+	<insert id="write">
+		INSERT INTO project_jsp_board
+			(num,writer,subject,content,ip,filename,filesize,show)  
+			VALUES 
+			( (select nvl(max(num)+1,1) from project_jsp_board) 
+ 			 , #{writer},#{subject}
+ 			 , #{content},#{ip},#{filename},#{filesize},#{show}) 
+	</insert>
 </mapper>
 

@@ -4,13 +4,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리스트</title>
+<title>글</title>
 <%@include file="../include/header.jsp" %>
+<%-- <%@include file="../include/login_check.jsp" %> --%>
+
 <script type="text/javascript">
 $(function(){
-	$("#btnWrite").click(function(){
-		location.href="../board/write.jsp";
+	comment_list();
+	$("#btnSave").click(function(){
+		comment_add();
 	});
+	
+	$("#btnList").click(function(){
+		location.href="${path}/board_servlet/list.do";
+	});
+	
+	$("#btnReply").click(function(){
+		document.form1.action="${path}/board_servlet/reply.do";
+		document.form1.submit();
+	});
+	$("#btnEdit").click(function(){
+		document.form1.action="${path}/board_servlet/pass_check.do";
+		document.form1.submit();
+	});
+	
+	
 	$("#logout").click(function(){
 		location.href="${path}/user_servlet/logout.do";
 	});
@@ -40,6 +58,32 @@ $(function(){
 	});
 });
 
+function comment_add(){
+	var param="board_num=${dto.num}&writer=" + $("#writer").val() 
+				 + "&content=" + $("#content").val();
+	
+	$.ajax({
+		type : "post",
+		url : "${path}/board_servlet/comment_add.do",
+		data : param,
+		success : function(){
+			$("#writer").val("");
+			$("#content").val("");
+			comment_list();
+		}
+	});
+}
+
+function comment_list(){
+	$.ajax({
+		type : "post",
+		url : "${path}/board_servlet/commentList.do",
+		data : "num=${dto.num}",
+		success : function(result){
+			$("#commentList").html(result);
+		}
+	});
+}
 </script>
 </head>
 <body>
@@ -96,120 +140,59 @@ $(function(){
 <div class="container-fluid">
 	<div class="row justify-content-center">
 		<div class="col col-10">
-<table class="table table-hover" style="text-align: center;">
-<thead>
-	<tr class="table-primary" style="width: 1000px;">
-		<th scope="col">번호</th>
-		<th scope="col">이름</th>
-		<th scope="col" width="50%">제목</th>
-		<th scope="col">날짜</th>
-		<th scope="col">조회수</th>
-		<th scope="col">첨부파일</th>
-		<th scope="col">다운로드</th>
+<form action="" name="form1" method="post">
+<table class="table table-borderless"  style="width: 100%; text-align: center;">
+	<tr class="table-primary">
+		<td width="5%">${list.num }</td>	
+		<td width="60%">${list.subject }</td>
+		<td width="15%">${list.writer }</td>
+		<td width="20%">${list.reg_date }</td>
 	</tr>
-</thead>
-<tbody>
-	<c:forEach var="list" items="${list }">
-	<c:choose>
-		<c:when test="${list.show == 'y' || user.userid == list.writer}">
-		<tr>
-			<th scope="row">${list.num }</th>
-			<td>${list.writer }</td>
-			<td style="text-align: left;">
-				<a href="${path }/board_servlet/view.do?num=${list.num}">${list.subject } 
-					<c:if test="${list.comment_count > 0 }">
-						<label style="color: black">(${list.comment_count })</label>
-					</c:if>
-				</a>
+	<tr class="table-primary">
+		<td colspan="4">${list.content }</td>
+	</tr>
+	<c:if test="${list.filesize > 0}">
+	<tr class="table-primary">
+			<td colspan="4">
+				${list.filename}( ${list.filesize} bytes )
+				<a href="${path}/board_servlet/download.do?num=${list.num}" class="btn btn-primary">다운로드</a>
 			</td>
-			<td>${list.reg_date }</td>
-			<td>${list.readcount }</td>
-			<td>
-				<c:if test="${list.filesize > 0}">
-					<a href="${path }/board_servlet/download.do?num=${list.num}">
-						<img alt="파일 이미지" src="../images/file.gif">
-					</a>
-				</c:if>
-				<c:if test="${list.filesize == 0 }">
-					-
-				</c:if>
-			</td>
-			<td>${list.down }</td>
-		</tr>
-		</c:when>
-		<c:when test="${list.show == 'n' }">
-			<tr>
-				<th>${list.num }</th>
-				<th colspan="6">삭제된 게시물입니다.</th>
-			</tr>
-		</c:when>
-		<c:when test="${list.show == 's' || user.userid != list.writer}">
-			<tr>
-				<th>${list.num }</th>
-				<td>${list.writer }</td>
-				<td colspan="5"><i class="fa fa-lock"></i>&nbsp;비밀 게시물입니다.</td>
-			</tr>
-		</c:when>
-	</c:choose>
-	</c:forEach>
-</tbody>
+	</tr>
+	</c:if>
+	<tr class="table-primary">
+		<td>
+<c:if test="${user.userid == $list.writer }">
+			<input type="button" id="btnUpdate" value="수정" class="btn btn-block btn-primary">
+			<input type="button" id="btnDelete" value="삭제" class="btn btn-block btn-danger">
+</c:if>	
+			<input type="hidden" name="num" value="${list.num }">
+			<input type="button" value="리스트" class="btn btn-block btn-info">
+		</td>
+	</tr>
 </table>
-
-
-<!-- 페이지 -->
-<br><br>
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-<c:if test="${page.curPage > 1 }">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous" onclick="list('1')">
-        <span aria-hidden="true">&laquo;</span><!-- 처음 -->
-      </a>
-    </li>
-</c:if>
-<c:if test="${page.curBlock > 1}">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous" onclick="list('${page.prevPage}')">
-        <span aria-hidden="true">&lt;</span><!-- 이전 -->
-      </a>
-    </li>
-</c:if>
-<c:forEach var="num" begin="${page.blockStart }" end="${page.blockEnd }">
-	<c:choose>
-		<c:when test="${num == page.curPage }"><!-- 현제 패이지 -->
-			<li class="page-item active" aria-current="page">
-				<span class="page-link">${num }<span class="sr-only">(current)</span></span>
-			</li>
-		</c:when>
-		<c:otherwise>
-		<li class="page-item"><!-- 페이지들 -->
-      		<a class="page-link" href="#" onclick="list('${num}')">${num }</a>
-    	</li>
-		</c:otherwise>
-	</c:choose>
-	</c:forEach>
-<c:if test="${page.curBlock < page.totBlock }">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next" onclick="list('${page.nextPage}')">
-        <span aria-hidden="true">&gt;</span><!-- 다음 -->
-      </a>
-    </li>
-    </c:if>
-    
-<c:if test="${page.curPage < page.totPage}">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next" onclick="list('${page.totPage}')">
-        <span aria-hidden="true">&raquo;</span><!-- 끝 -->
-      </a>
-    </li>
-    </c:if>
-  </ul>
-</nav>
-<br>
-<button id="btnWrite" class="btn btn-block btn-primary">글쓰기</button><br>
-
-<br><br><br>
-			
+</form>
+<br><hr><br>
+	<form method="post">
+		<table>
+			<tr>
+				<th colspan="3">댓글쓰기</th>
+			</tr>
+			<tr>
+				<th><label for="writer">이름</label></th>
+				<td><input id="writer" class="form-control"></td>
+			</tr>
+			<tr>
+				<th><label for="content">내용</label></th>
+				<td width="70%">
+					<textarea rows="3" cols="80" placeholder="댓글을 입력하세요" id="content" class="form-control"></textarea>
+				</td>
+				<th rowspan="2"><button id="btnSave" class="btn btn-primary">확인</button></th>
+			</tr>
+		</table>
+	</form>
+	<br><hr><br>
+	<div id="commentList"></div>
+	<br><br><br>
 		</div>
 	</div>
 </div>
