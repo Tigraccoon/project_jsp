@@ -7,6 +7,7 @@
 <title>회원가입</title>
 <%@include file="../include/header.jsp" %>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+
 <script type="text/javascript">
 $(function(){
 	$("#btnWrite").click(function(){
@@ -19,10 +20,10 @@ $(function(){
 		location.href="../user/login.jsp";
 	});
 	$("#list").click(function(){
-		location.href="../main/index.jsp";
+		location.href="${path}/board_servlet/list.do";
 	});
 	$("#main").click(function(){
-		location.href="../main/index.jsp";
+		location.href="${path}/board_servlet/list.do";
 	});
 	$("#write").click(function(){
 		location.href="../board/write.jsp";
@@ -34,7 +35,7 @@ $(function(){
 		location.href="../user/signup.jsp";
 	});
 	$("#mylist").click(function(){
-		location.href="../user/mylist.jsp";
+		location.href="${path}/board_servlet/myList.do?userid=${user.userid}";
 	});
 	$("#pwd_check").click(function(){
 		location.href="../user/pwd_Check.jsp";
@@ -101,8 +102,8 @@ function doSubmit(){
       </li>
       </c:if>
     </ul>
-    <form class="form-inline my-2 my-sm-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="게시물 검색" aria-label="Search">
+    <form class="form-inline my-2 my-sm-0" method="post" action="${path }/board_servlet/list.do">
+      <input class="form-control mr-sm-2" id="search" name="search" type="search" placeholder="게시물 검색" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i>&nbsp;Search</button>
     </form>
   </div>
@@ -183,7 +184,6 @@ function doSubmit(){
   </div>
  </div>
 </div>
-
 
 </body>
 </html>

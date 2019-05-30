@@ -1,15 +1,12 @@
 package board.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class CommentDTO {
 	private int c_num;
 	private int board_num;
 	private String c_writer;
 	private String c_content;
-	private int c_ref;
-	private int c_step;
-	private int c_level;
 	private Date c_date;
 	private String c_show;
 	public int getC_num() {
@@ -36,24 +33,6 @@ public class CommentDTO {
 	public void setC_content(String c_content) {
 		this.c_content = c_content;
 	}
-	public int getC_ref() {
-		return c_ref;
-	}
-	public void setC_ref(int c_ref) {
-		this.c_ref = c_ref;
-	}
-	public int getC_step() {
-		return c_step;
-	}
-	public void setC_step(int c_step) {
-		this.c_step = c_step;
-	}
-	public int getC_level() {
-		return c_level;
-	}
-	public void setC_level(int c_level) {
-		this.c_level = c_level;
-	}
 	public Date getC_date() {
 		return c_date;
 	}
@@ -69,7 +48,7 @@ public class CommentDTO {
 	@Override
 	public String toString() {
 		return "ContentDTO [c_num=" + c_num + ", board_num=" + board_num + ", c_writer=" + c_writer + ", c_content="
-				+ c_content + ", c_ref=" + c_ref + ", c_step=" + c_step + ", c_level=" + c_level + ", c_date=" + c_date
+				+ c_content + ", c_date=" + c_date
 				+ ", c_show=" + c_show + "]";
 	}
 	

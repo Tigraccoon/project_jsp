@@ -13,8 +13,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		 	select A.*, rownum as rn 
 			from (
       			select num,writer,subject,reg_date,readcount,filename,filesize,down,show
-			,(select count(*) from project_jsp_comment where board_num=c_num) comment_count
+			,(select count(*) from project_jsp_comment where board_num=num) comment_count
       				from project_jsp_board
+      				WHERE writer like #{search} or subject like #{search}
+      				order by num DESC
+  				) A
+			)
+		where rn between #{start} and #{end}
+	</select>
+	<select id="getFileName" resultType="String">
+		SELECT filename
+			FROM project_jsp_board
+			WHERE num=#{num}
+	</select>
+	<select id="view" resultType="board.dto.BoardDTO">
+		SELECT * FROM project_jsp_board 
+			WHERE num=#{num}
+	</select>
+	<select id="commentList" resultType="board.dto.CommentDTO">
+		SELECT * FROM project_jsp_comment  
+			WHERE board_num=#{num}  
+			ORDER BY c_num 
+	</select>
+	<select id="mylist" resultType="board.dto.BoardDTO">
+		 SELECT *
+			FROM (
+ 		 	select A.*, rownum as rn 
+			from (
+      			select num,writer,subject,reg_date,readcount,filename,filesize,down,show
+			,(select count(*) from project_jsp_comment where board_num=num) comment_count
+      				from project_jsp_board
+      				WHERE writer=#{userid}
       				order by num DESC
   				) A
 			)
@@ -28,5 +57,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			 , #{writer},#{subject}
  			 , #{content},#{ip},#{filename},#{filesize},#{show}) 
 	</insert>
+	<insert id="commentAdd">
+		INSERT INTO project_jsp_comment
+			(c_num,board_num,c_writer,c_content) 
+			VALUES ((select nvl(max(c_num)+1,1) from project_jsp_comment)
+			, #{board_num}, #{c_writer}, #{c_content})
+	</insert>
+	<update id="downCount">
+		UPDATE project_jsp_board SET down=down+1 
+			WHERE num=#{num} 
+	</update>
+	<update id="readCount">
+		UPDATE project_jsp_board SET readcount=readcount+1 
+			WHERE num=#{num}
+	</update>
+	<update id="contentUpdate">
+		UPDATE project_jsp_board 
+			SET writer=#{writer},subject=#{subject},content=#{content}
+			,filename=#{filename},filesize=#{filesize},down=#{down},show=#{show}  
+			WHERE num=#{num}
+	</update>
+	<update id="delete">
+		UPDATE project_jsp_board
+			SET show='n' 
+			WHERE num=#{num}
+	</update>
 </mapper>
 

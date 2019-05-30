@@ -10,7 +10,6 @@
 </head>
 <body>
 <div id="result"></div>
-
 <script type="text/javascript">
 $(function(){
 	list('1');

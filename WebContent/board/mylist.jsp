@@ -4,16 +4,47 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리스트</title>
+<title>내가 쓴 글</title>
 <%@include file="../include/header.jsp" %>
-<script type="text/javascript">
+<%@include file="../include/login_check.jsp" %>
 
+<script type="text/javascript">
+$(function(){
+	$("#btnWrite").click(function(){
+		location.href="../board/write.jsp";
+	});
+	$("#logout").click(function(){
+		location.href="${path}/user_servlet/logout.do";
+	});
+	$("#login").click(function(){
+		location.href="../user/login.jsp";
+	});
+	$("#list").click(function(){
+		location.href="${path}/board_servlet/list.do";
+	});
+	$("#main").click(function(){
+		location.href="${path}/board_servlet/list.do";
+	});
+	$("#write").click(function(){
+		location.href="../board/write.jsp";
+	});
+	$("#finduser").click(function(){
+		location.href="../user/finduser.jsp";
+	});
+	$("#signup").click(function(){
+		location.href="../user/signup.jsp";
+	});
+	$("#mylist").click(function(){
+		location.href="${path}/board_servlet/myList.do?userid=${user.userid}";
+	});
+	$("#pwd_check").click(function(){
+		location.href="../user/pwd_Check.jsp";
+	});
+});
 
 </script>
 </head>
 <body>
-<div id="result">
-
 <div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#" id="main">게시판</a>
@@ -23,7 +54,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="#" id="list">리스트<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
@@ -42,12 +73,12 @@
       </li>
       </c:if>
       <c:if test="${user.userid != null }">	<!-- 로그인 이후 -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           	<label class="text text-primary"><i class="fa fa-user-o"></i>&nbsp;${user.userid }</label> 님
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#" id="mylist"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
+          <a class="dropdown-item active" href="#" id="mylist"><i class="fa fa-history"></i>&nbsp;내가 쓴 글</a>
           <a class="dropdown-item" href="#" id="pwd_check"><i class="fa fa-cog"></i>&nbsp;회원정보</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout"><i class="fa fa-sign-out"></i>&nbsp;로그아웃</a>
@@ -81,6 +112,11 @@
 </thead>
 <tbody>
 	<c:forEach var="list" items="${list }">
+	<c:if test="${list.content == '글이 없음...' }">
+		<tr>
+			<td colspan="7">작성한 글이 없습니다.</td>
+		</tr>
+	</c:if>
 	<c:choose>
 		<c:when test="${list.show == 'y' || user.userid == list.writer}">
 		<tr>
@@ -184,52 +220,6 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-$(function(){
-	$("#btnWrite").click(function(){
-		location.href="../board/write.jsp";
-	});
-	$("#logout").click(function(){
-		location.href="${path}/user_servlet/logout.do";
-	});
-	$("#login").click(function(){
-		location.href="../user/login.jsp";
-	});
-	$("#list").click(function(){
-		location.href="${path}/board_servlet/list.do";
-	});
-	$("#main").click(function(){
-		location.href="${path}/board_servlet/list.do";
-	});
-	$("#write").click(function(){
-		location.href="../board/write.jsp";
-	});
-	$("#finduser").click(function(){
-		location.href="../user/finduser.jsp";
-	});
-	$("#signup").click(function(){
-		location.href="../user/signup.jsp";
-	});
-	$("#mylist").click(function(){
-		location.href="${path}/board_servlet/myList.do?userid=${user.userid}";
-	});
-	$("#pwd_check").click(function(){
-		location.href="../user/pwd_Check.jsp";
-	});
-});
-function list(curPage){
-	var param = "curPage=" + curPage;
-	
-	$.ajax({
-		type : "post",
-		url : "${path}/board_servlet/list.do",
-		data : param,
-		success : function(result){	
-			$("#result").html(result);
-		}		
-	});
-}
-</script>
-</div>
+
 </body>
 </html>

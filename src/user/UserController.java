@@ -51,7 +51,7 @@ public class UserController extends HttpServlet {
 				} else { //로그인 성공
 					session.setAttribute("user", user);
 					
-					page = "/main/index.jsp";
+					page = "/board_servlet/list.do";
 					RequestDispatcher rd = request.getRequestDispatcher(page);
 					rd.forward(request, response);
 				}

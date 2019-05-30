@@ -181,9 +181,14 @@ public class UserDAO {
 				dto = new UserDTO();
 				dto.setUserid("아이디, 비밀번호 찾기에 실패하였습니다. 이메일, 이름을 확인하세요!");
 			} else {	//임시 비밀번호로 변경
+				int tempPwd=0;
 				Random r = new Random();
+
+				while(true) {
+					tempPwd = r.nextInt(9999);
+					if (tempPwd > 1000) break;
+				}
 				
-				int tempPwd = r.nextInt(9999);
 				dto.setPwd(String.valueOf(tempPwd));
 				
 				session.update("user.updateUser", dto);
