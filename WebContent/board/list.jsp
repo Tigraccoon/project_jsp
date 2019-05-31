@@ -67,7 +67,7 @@
 <div class="container-fluid">
 	<div class="row justify-content-center">
 		<div class="col col-10">
-<table class="table table-hover" style="text-align: center;">
+<table class="table table-bordered" style="text-align: center;">
 <thead>
 	<tr class="table-primary" style="width: 1000px;">
 		<th scope="col">번호</th>
@@ -81,8 +81,7 @@
 </thead>
 <tbody>
 	<c:forEach var="list" items="${list }">
-	<c:choose>
-		<c:when test="${list.show == 'y' || user.userid == list.writer}">
+		<c:if test="${list.show == 'y'}">
 		<tr>
 			<th scope="row">${list.num }</th>
 			<td>${list.writer }</td>
@@ -107,21 +106,50 @@
 			</td>
 			<td>${list.down }</td>
 		</tr>
-		</c:when>
-		<c:when test="${list.show == 'n' }">
+		</c:if>
+		<c:if test="${list.show == 's'}">
+			<c:if test="${user.userid == list.writer }">
 			<tr>
-				<th>${list.num }</th>
-				<th colspan="6">삭제된 게시물입니다.</th>
+				<th scope="row">${list.num }</th>
+				<td>${list.writer }</td>
+				<td style="text-align: left;">
+					<a href="${path }/board_servlet/view.do?num=${list.num}"><i class="fa fa-lock"></i>&nbsp;${list.subject } 
+						<c:if test="${list.comment_count > 0 }">
+							<label style="color: black">(${list.comment_count })</label>
+						</c:if>
+					</a>
+				</td>
+				<td><fmt:formatDate value="${list.reg_date }" pattern="yyyy-MM-dd hh:mm:ss E"/></td>
+				<td>${list.readcount }</td>
+				<td>
+					<c:if test="${list.filesize > 0}">
+						<a href="${path }/board_servlet/download.do?num=${list.num}">
+							<img alt="파일 이미지" src="../images/file.gif">
+						</a>
+					</c:if>
+					<c:if test="${list.filesize == 0 }">
+						-
+					</c:if>
+				</td>
+				<td>${list.down }</td>
 			</tr>
-		</c:when>
-		<c:when test="${list.show == 's' || user.userid != list.writer}">
+			</c:if>
+			<c:if test="${user.userid != list.writer }">
 			<tr>
 				<th>${list.num }</th>
 				<td>${list.writer }</td>
 				<td colspan="5"><i class="fa fa-lock"></i>&nbsp;비밀 게시물입니다.</td>
 			</tr>
-		</c:when>
-	</c:choose>
+			</c:if>
+		</c:if>
+		<c:if test="${list.show == 'n' }">
+			<tr>
+				<th>${list.num }</th>
+				<th colspan="6">삭제된 게시물입니다.</th>
+			</tr>
+		</c:if>
+		
+		
 	</c:forEach>
 </tbody>
 </table>

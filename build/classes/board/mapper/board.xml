@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       			select num,writer,subject,reg_date,readcount,filename,filesize,down,show
 			,(select count(*) from project_jsp_comment where board_num=num) comment_count
       				from project_jsp_board
-      				WHERE writer=#{userid}
+      				WHERE writer=#{userid} 
       				order by num DESC
   				) A
 			)
@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			,filename=#{filename},filesize=#{filesize},down=#{down},show=#{show}  
 			WHERE num=#{num}
 	</update>
-	<update id="delete">
+	<update id="contentDelete">
 		UPDATE project_jsp_board
 			SET show='n' 
 			WHERE num=#{num}
