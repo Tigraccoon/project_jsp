@@ -195,6 +195,12 @@ public class BoardController extends HttpServlet {
 			String c_writer = request.getParameter("c_writer");
 			String c_content = request.getParameter("c_content");
 			
+			System.out.println();
+			System.out.println(board_num);
+			System.out.println(c_writer);
+			System.out.println(c_content);
+			System.out.println();
+			
 			CommentDTO dto = new CommentDTO();
 			
 			dto.setBoard_num(board_num);
